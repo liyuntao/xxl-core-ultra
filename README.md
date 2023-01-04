@@ -31,3 +31,29 @@ Release Note Part II：
 * 非侵入的监控支持，自动监控任务耗时(分布); 在 Actuator 脚手架下可以自动注入任务耗时监控至 PrometheusMeterRegistry
 * 全局梳理，规范化执行器各模块线程命名，便于跟进执行细节与日志查询
 * 提供 starter 简化配置，无需写配置代码。yaml 配置项可以被 IDE 解析检查(拼写错会标黄警告)，支持 Intellij IDEA 的 hint 检查
+
+## usage
+
+1. 建议本地先发布一下，并引入依赖到 Spring boot 工程
+```xml
+<dependency>
+    <groupId>com.xxl</groupId>
+    <artifactId>xxl-ultra-spring-boot-starter</artifactId>
+    <version>whatever</version>
+</dependency>
+```
+
+2. 在 application.yaml 中完成参数配置，参考下方。 IDEA 中可以鼠标停留获取配置字段的 Hint 解释
+被组件扫描后，XxlJobSpringExecutor 会被自动注入并启动
+
+```yaml
+com.xxl:
+  enabled: true
+  appName: demo-executor
+  accessToken: "your_xxl_token"
+  adminAddress: http://your-xxl-admin-url/xxl-job-admin
+  port: 9980
+  enableMetric: true
+```
+
+3. 留意任务逻辑(各个 JobHandler 类) 的 API 变更，目前需要强制继承 AbstractJobHandler 以保证方法签名的类型
